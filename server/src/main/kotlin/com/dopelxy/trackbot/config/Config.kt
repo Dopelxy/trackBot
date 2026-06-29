@@ -32,4 +32,8 @@ object Config {
         get() = properties.getProperty("PROXY_PORT")?.toInt()
             ?: error("PROXY_PORT not found in local.properties")
 
+    val russianPostUrl: String
+        get() = properties.getProperty("RUSSIAN_POST_URL")
+            ?: error("RUSSIAN_POST_URL not found in local.properties")
+
 }

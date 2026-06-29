@@ -19,4 +19,5 @@ captures
 node_modules/
 build
 **/build
+logs/
 *.log
