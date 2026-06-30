@@ -1,21 +1,42 @@
+
 package com.dopelxy.trackbot.bot
 
-
+import org.slf4j.LoggerFactory
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication
 
 object BotLauncher {
 
+    private val logger =
+        LoggerFactory.getLogger(BotLauncher::class.java)
+
+    private var application: TelegramBotsLongPollingApplication? = null
+
     fun start(token: String) {
 
-        val application = TelegramBotsLongPollingApplication()
+        if (application != null) {
+            logger.warn("TrackBot is already running.")
+            return
+        }
 
-        application.registerBot(
+        application = TelegramBotsLongPollingApplication()
+
+        application!!.registerBot(
             token,
             TrackBot(token)
         )
 
-        println("TrackBot started successfully.")
+        logger.info("TrackBot started successfully.")
+    }
 
-        Thread.currentThread().join()
+    fun stop() {
+
+        logger.info("Stopping TrackBot...")
+
+        application?.close()
+
+        application = null
+
+        logger.info("TrackBot stopped.")
     }
 }
+

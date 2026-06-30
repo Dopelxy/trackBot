@@ -10,6 +10,12 @@ application {
     mainClass = "com.dopelxy.trackbot.ApplicationKt"
 }
 
+ktor {
+    fatJar {
+        archiveFileName.set("TrackBot.jar")
+    }
+}
+
 dependencies {
     
     implementation(libs.logback)
@@ -22,4 +28,21 @@ dependencies {
     implementation(libs.ktor.clientCore)
     implementation(libs.ktor.clientCio)
     implementation(libs.ktor.clientContentNegotiation)
+}
+
+tasks.shadowJar {
+
+    archiveBaseName.set("TrackBot")
+
+    archiveClassifier.set("")
+
+    archiveVersion.set("")
+
+    mergeServiceFiles()
+
+    manifest {
+        attributes(
+            "Main-Class" to "com.dopelxy.trackbot.ApplicationKt"
+        )
+    }
 }

@@ -75,7 +75,11 @@ class RussianPostClient {
             )
 
             val body = response.body()
-            logger.debug("SOAP response:\n{}", body)
+            logger.debug(
+                "HTTP {} | SOAP response received ({} chars)",
+                response.statusCode(),
+                body.length
+            )
 
 
             if (body.contains(":Fault>")) {
@@ -136,15 +140,19 @@ class RussianPostClient {
 
         } catch (e: Exception) {
 
-            logger.error("Tracking failed", e)
+            logger.error(
+                "Tracking failed for {}",
+                trackNumber,
+                e
+            )
 
             val errorType = when (e) {
 
-                is java.net.http.HttpTimeoutException ->
+                is HttpTimeoutException ->
                     ErrorType.TIMEOUT
 
-                is java.net.ConnectException,
-                is java.net.UnknownHostException ->
+                is ConnectException,
+                is UnknownHostException ->
                     ErrorType.NETWORK
 
                 else ->
